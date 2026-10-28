@@ -1,0 +1,23 @@
+# ---------------------------------------------------------------------------
+# Fallback for hosting where the WHOLE project is uploaded into the web root
+# (e.g. Hostinger public_html) and the document root cannot point to /public.
+# All requests are routed into /public; private directories are blocked.
+# Preferred setup: point the domain's document root to the /public directory.
+# ---------------------------------------------------------------------------
+Options -Indexes
+DirectoryIndex index.php
+
+<FilesMatch "(^\.|\.(md|sql|gz|zip|log|ini|lock|example\.php|json|dist|sh|bat)$)">
+    Require all denied
+</FilesMatch>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Block private application directories outright
+    RewriteRule ^(app|bin|config|database|docs|storage|tests)(/|$) - [F,L]
+
+    # Everything else is served from /public
+    RewriteCond %{REQUEST_URI} !/public/
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>

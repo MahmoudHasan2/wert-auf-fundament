@@ -1,0 +1,26 @@
+# Uploaded media: only images may be delivered, nothing may be executed.
+Options -Indexes -ExecCGI
+
+<IfModule mod_php.c>
+    php_flag engine off
+</IfModule>
+<IfModule mod_php8.c>
+    php_flag engine off
+</IfModule>
+
+RemoveHandler .php .phtml .php3 .php4 .php5 .php7 .php8 .phar .pht .cgi .pl .py .sh
+RemoveType .php .phtml .php3 .php4 .php5 .php7 .php8 .phar .pht
+
+# Deny everything by default …
+<FilesMatch ".*">
+    Require all denied
+</FilesMatch>
+# … and only allow generated image files.
+<FilesMatch "^[a-f0-9]{24}-(sm|md|lg|full)\.(webp|jpg|png)$">
+    Require all granted
+</FilesMatch>
+
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set Content-Security-Policy "default-src 'none'; img-src 'self'; style-src 'none'; script-src 'none'; sandbox"
+</IfModule>

@@ -1,0 +1,15 @@
+/config/env.php
+/storage/logs/*
+/storage/cache/*
+/storage/backups/*
+/storage/installed.lock
+/public/uploads/*
+!/storage/logs/.htaccess
+!/storage/cache/.htaccess
+!/storage/backups/.htaccess
+!/public/uploads/.htaccess
+!/public/uploads/index.html
+/tests/.tmp/
+.DS_Store
+Thumbs.db
+*.log
